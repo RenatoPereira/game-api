@@ -1,9 +1,12 @@
-import { Column, PrimaryGeneratedColumn } from "typeorm";
+import { Column, PrimaryGeneratedColumn } from 'typeorm';
 
 export class Player {
-    @PrimaryGeneratedColumn()
-    id: string;
+  @PrimaryGeneratedColumn()
+  id: string;
 
-    @Column()
-    name: string;
+  @Column()
+  name: string;
+
+  @Column()
+  leaderId: string;
 }

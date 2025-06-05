@@ -12,7 +12,4 @@ export class MapTable {
 
     @Column()
     width: number;
-
-    @Column()
-    grid: Grid<Tile>;
 }

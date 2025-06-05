@@ -6,15 +6,23 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabasesModule } from '../databases/databases.module';
 import { GamesStateService } from '../games-state/games-state.service';
 import { MapsService } from '../maps/maps.service';
-import { CombatService } from 'src/combat/combat.service';
+import { CombatService } from '../combat/combat.service';
+import { UnitsService } from '../units/units.service';
 
 describe('MatchsGateway', () => {
   let gateway: MatchsGateway;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [MatchsGateway, MatchsService, GamesStateService, MapsService, CombatService],
-      imports: [DatabasesModule, TypeOrmModule.forFeature([Match])]
+      providers: [
+        MatchsGateway,
+        MatchsService,
+        GamesStateService,
+        MapsService,
+        CombatService,
+        UnitsService,
+      ],
+      imports: [DatabasesModule, TypeOrmModule.forFeature([Match])],
     }).compile();
 
     gateway = module.get<MatchsGateway>(MatchsGateway);

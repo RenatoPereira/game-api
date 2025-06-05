@@ -7,9 +7,17 @@ import { Match } from './entities/match.entity';
 import { GamesStateService } from '../games-state/games-state.service';
 import { MapsService } from '../maps/maps.service';
 import { CombatService } from 'src/combat/combat.service';
+import { UnitsService } from 'src/units/units.service';
 
 @Module({
-  providers: [MatchsGateway, MatchsService, GamesStateService, MapsService, CombatService],
-  imports: [DatabasesModule, TypeOrmModule.forFeature([Match])]
+  providers: [
+    MatchsGateway,
+    MatchsService,
+    GamesStateService,
+    MapsService,
+    CombatService,
+    UnitsService,
+  ],
+  imports: [DatabasesModule, TypeOrmModule.forFeature([Match])],
 })
 export class MatchsModule {}

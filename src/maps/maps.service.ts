@@ -3,54 +3,61 @@ import { MapTable } from './entities/map.entity';
 import { Grid, AxialCoordinates, rectangle, ring } from 'honeycomb-grid';
 import { Tile } from './entities/tile.entity';
 import { GameStateUnit } from '../games-state/interfaces/game-state.interface';
-import { aStar } from 'abstract-astar'
+import { aStar } from 'abstract-astar';
 import { getUnitKey } from '../libs/tile.utils';
 
 @Injectable()
 export class MapsService {
-  create(): MapTable {
+  create(height = 12, width = 20): MapTable {
     const map = new MapTable();
 
-    map.height = 12;
-    map.width = 20;
-    map.grid = new Grid(Tile, rectangle({ width: map.width, height: map.height }))
+    map.height = height;
+    map.width = width;
 
     return map;
   }
 
-  private populateMap = (map: MapTable, units: Map<string, GameStateUnit>) => {
-    return map.grid.forEach((tile) => {
+  populateMap = (
+    map: MapTable,
+    units: Map<string, GameStateUnit>,
+  ): Grid<Tile> => {
+    const grid = new Grid(
+      Tile,
+      rectangle({ width: map.width, height: map.height }),
+    );
+
+    grid?.forEach((tile) => {
       const unit = units.get(getUnitKey(tile));
 
       if (unit) {
         tile.setUnit(unit);
       }
-    })
-  }
+    });
 
-  distanceToTravel(map: MapTable, units: Map<string, GameStateUnit>, from: AxialCoordinates, to: AxialCoordinates): number {
-    const populatedMap = this.populateMap(map, units)
+    return grid;
+  };
 
-    const fromTile = populatedMap.getHex(from);
-    const toTile = populatedMap.getHex(to);
+  getDistanceToIfCanTravel(
+    grid: Grid<Tile>,
+    from: AxialCoordinates,
+    to: AxialCoordinates,
+  ): number {
+    const fromTile = grid.getHex(from);
+    const toTile = grid.getHex(to);
 
-    console.log({ from, fromTile, to, toTile })
-
-    if (!fromTile || !toTile) 
-      throw new BadRequestException('Tile not found');
+    if (!fromTile || !toTile) throw new BadRequestException('Tile not found');
 
     if (!fromTile.isOccupied())
       throw new BadRequestException('From Tile is not occupied');
 
     if (toTile.isOccupied())
-      throw new BadRequestException('To Tile is not occupied');
+      throw new BadRequestException('To Tile is occupied');
 
-    const path = this.shortestPath(map, fromTile, toTile);
+    const path = this.shortestPath(grid, fromTile, toTile);
 
-    if (!path)
-      throw new BadRequestException('No path found');
+    if (!path) throw new BadRequestException('No path found');
 
-    const distanceToTravel = path.length - 1
+    const distanceToTravel = path.length - 1;
 
     if (distanceToTravel > fromTile.getUnit()?.state.distanceCanMove!)
       throw new BadRequestException('No movement enough');
@@ -58,14 +65,15 @@ export class MapsService {
     return distanceToTravel;
   }
 
-  canAtack(map: MapTable, units: Map<string, GameStateUnit>, from: AxialCoordinates, to: AxialCoordinates): boolean {
-    const populatedMap = this.populateMap(map, units)
+  canAtack(
+    grid: Grid<Tile>,
+    from: AxialCoordinates,
+    to: AxialCoordinates,
+  ): boolean {
+    const fromTile = grid.getHex(from);
+    const toTile = grid.getHex(to);
 
-    const fromTile = populatedMap.getHex(from);
-    const toTile = populatedMap.getHex(to);
-
-    if (!fromTile || !toTile) 
-      throw new BadRequestException('Tile not found');
+    if (!fromTile || !toTile) throw new BadRequestException('Tile not found');
 
     if (!fromTile.isOccupied())
       throw new BadRequestException('From Tile is not occupied');
@@ -73,34 +81,47 @@ export class MapsService {
     if (!toTile.isOccupied())
       throw new BadRequestException('To Tile is not occupied');
 
-    const path = this.shortestPath(map, fromTile, toTile);
+    const path = this.shortestPath(grid, fromTile, toTile);
 
-    if (!path)
-      throw new BadRequestException('No path found');
+    if (!path) throw new BadRequestException('No path found');
 
-    const distanceToAtack = path.length - 1
+    const distanceToAtack = path.length - 1;
 
-    return distanceToAtack >= fromTile.getUnit()?.unit.range!
+    return (
+      fromTile.getUnit()?.state.canAttack! &&
+      distanceToAtack <= fromTile.getUnit()?.unit.range!
+    );
   }
 
-  private shortestPath(map: MapTable, from: Tile, to: Tile): Tile[] | undefined {
+  private shortestPath(
+    grid: Grid<Tile>,
+    from: Tile,
+    to: Tile,
+  ): Tile[] | undefined {
     return aStar<Tile>({
       start: from,
       goal: to,
-      estimateFromNodeToGoal: (tile) => map.grid.distance(tile, to),
-      neighborsAdjacentToNode: (center) => map.grid.traverse(ring({ radius: 1, center })).toArray(),
-      actualCostToMove: (_, __, tile) => tile.isOccupied() && !tile.equals(to) ? Infinity : 1,
-    })
+      estimateFromNodeToGoal: (tile) => grid.distance(tile, to),
+      neighborsAdjacentToNode: (center) =>
+        grid.traverse(ring({ radius: 1, center })).toArray(),
+      actualCostToMove: (_, __, tile) =>
+        tile.isOccupied() && !tile.equals(to) ? Infinity : 1,
+    });
   }
 
-  getEnablePositionAroundLeader(map: MapTable, units: Map<string, GameStateUnit>, position: AxialCoordinates): AxialCoordinates {
-    const positions = map.grid.traverse(ring({ radius: 1, center: position })).toArray();
+  getEnablePositionAround(
+    grid: Grid<Tile>,
+    position: AxialCoordinates,
+  ): AxialCoordinates {
+    const positions = grid
+      .traverse(ring({ radius: 1, center: position }))
+      .toArray();
 
-    const enablePositions = positions.filter((tile) => units.get(getUnitKey(tile)) === undefined);
+    const firstEnablePosition = positions.find((tile) => !tile.isOccupied());
 
-    if (enablePositions.length === 0)
+    if (!firstEnablePosition)
       throw new BadRequestException('No enable position found');
 
-    return { q: enablePositions[0].q, r: enablePositions[0].r };
+    return firstEnablePosition;
   }
 }
