@@ -5,6 +5,7 @@ import { MatchStatus } from './interfaces/match.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GameState } from '../games-state/entities/game-state.entity';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class MatchsService {
@@ -71,7 +72,7 @@ export class MatchsService {
 
   private create(player: Player) {
     const match = new Match();
-    match.id = crypto.randomUUID();
+    match.id = uuidv4();
     match.player = player;
     match.status = MatchStatus.CREATED;
     match.history = [];

@@ -6,6 +6,7 @@ import {
 import { GameState } from './entities/game-state.entity';
 import { Match } from '../matchs/entities/match.entity';
 import { Unit } from '../units/entities/unit.entity';
+import { v4 as uuidv4 } from 'uuid';
 import {
   GameStateUnit,
   GameStateUnitState,
@@ -130,7 +131,7 @@ export class GamesStateService {
   ): GameState {
     const tmpState = deepClone(gameState);
     const gameUnit = {
-      id: crypto.randomUUID(),
+      id: uuidv4(),
       state: {
         health: unit.health,
         experience: 0,
