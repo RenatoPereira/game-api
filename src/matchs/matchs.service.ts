@@ -2,8 +2,8 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Match } from './entities/match.entity';
 import { Player } from '../players/entities/player.entity';
 import { MatchStatus } from './interfaces/match.interface';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+// import { InjectRepository } from '@nestjs/typeorm';
+// import { Repository } from 'typeorm';
 import { GameState } from '../games-state/entities/game-state.entity';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -14,9 +14,7 @@ export class MatchsService {
 
   private readonly logger = new Logger(MatchsService.name);
 
-  constructor(
-    @InjectRepository(Match) private matchRepository: Repository<Match>,
-  ) {}
+  constructor() {}
 
   findOrCreate(player: Player): Match {
     const openedMatch = this.findOpenedMatch();
