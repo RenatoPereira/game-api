@@ -22,7 +22,10 @@ type ClientData = {
 };
 @WebSocketGateway({
   cors: {
-    origin: '*',
+    origin:
+      process.env.NODE_ENV === 'development'
+        ? '*'
+        : 'https://game-app-sable.vercel.app',
   },
   namespace: 'match',
 })
