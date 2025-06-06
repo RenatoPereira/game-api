@@ -14,10 +14,10 @@ export const UNITS: { [key: string]: Unit } = {
     range: 1,
     assets: {
       splash:
-        'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122919/splash_eqxpzl.png',
+        'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122919/splash_eqxpzl.webp',
       sprite:
-        'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122918/sprite_wvyjiq.png',
-      full: 'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122920/full_srwpsf.png',
+        'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122918/sprite_wvyjiq.webp',
+      full: 'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122920/full_srwpsf.webp',
     },
   },
   'unit-rena': {
@@ -33,10 +33,10 @@ export const UNITS: { [key: string]: Unit } = {
     range: 3,
     assets: {
       splash:
-        'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122918/splash_qtter2.png',
+        'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122918/splash_qtter2.webp',
       sprite:
-        'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122918/sprite_h4ix3s.png',
-      full: 'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122920/full_q7ht56.png',
+        'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122918/sprite_h4ix3s.webp',
+      full: 'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122920/full_q7ht56.webp',
     },
   },
   'unit-celine': {
@@ -52,10 +52,10 @@ export const UNITS: { [key: string]: Unit } = {
     range: 3,
     assets: {
       splash:
-        'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122918/splash_bwsqge.png',
+        'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122918/splash_bwsqge.webp',
       sprite:
-        'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122917/sprite_vlcuno.png',
-      full: 'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122919/full_kj5s37.png',
+        'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122917/sprite_vlcuno.webp',
+      full: 'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122919/full_kj5s37.webp',
     },
   },
   'unit-ashton': {
@@ -71,10 +71,10 @@ export const UNITS: { [key: string]: Unit } = {
     range: 1,
     assets: {
       splash:
-        'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122918/splash_mkcql6.png',
+        'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122918/splash_mkcql6.webp',
       sprite:
-        'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122918/sprite_i6gimd.png',
-      full: 'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122918/full_qlkvdm.png',
+        'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122918/sprite_i6gimd.webp',
+      full: 'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122918/full_qlkvdm.webp',
     },
   },
   'unit-precis': {
@@ -90,10 +90,10 @@ export const UNITS: { [key: string]: Unit } = {
     range: 1,
     assets: {
       splash:
-        'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122919/splash_djrcm1.png',
+        'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122919/splash_djrcm1.webp',
       sprite:
-        'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122917/sprite_vd78pq.png',
-      full: 'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122918/full_lapqdv.png',
+        'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122917/sprite_vd78pq.webp',
+      full: 'https://res.cloudinary.com/dyfphd7ir/image/upload/v1749122918/full_lapqdv.webp',
     },
   },
 };
